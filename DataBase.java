@@ -173,8 +173,64 @@ public class DataBase {
                 }
             }
         }
-
         return false;
-
     }
+
+    public static boolean isFoundExamInClass(String className, String examName) {
+
+        for (Class class1 : classes) {
+            if (class1.getName().equals(className)) {
+                for (Exam exam : class1.getExams()) {
+                    if (exam.getExamName().equals(examName)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public static int returnExamByName(String classToGoTo ,String examName){
+
+        for (Class class1 : classes) {
+            if (class1.getName().equals(classToGoTo)) {
+                for (int i = 0; i < class1.getExams().size(); i++) {
+                    if (class1.getExams().get(i).getExamName().equals(examName)) {
+                        return i;
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
+    public static int returnIndexOfHomeWork(String className, String homeworkName) {
+
+        for (Class class1 : classes) {
+            if (class1.getName().equals(className)) {
+                for (int i = 0; i < class1.getHomeWorks().size(); i++) {
+                    if (class1.getHomeWorks().get(i).getHomeWorkName().equals(homeworkName)) {
+                        return i;
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+
+    public static int returnIndexOfExam(String className, String examName) {
+
+        for (Class class1 : classes) {
+            if (class1.getName().equals(className)) {
+                for (int i = 0; i < class1.getExams().size(); i++) {
+                    if (class1.getExams().get(i).getExamName().equals(examName)) {
+                        return i;
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+
+
 }

@@ -13,11 +13,11 @@ public class Main {
 
         Professor professor = new Professor("ali", "mami", "morti", "java", "computer science");
 
-        Quiz.questions.add(student);
-        Quiz.questions.add(professor);
-
-        System.out.println(Quiz.questions.get(0));
-        System.out.println(Quiz.questions.get(1));
+//        Quiz.questions.add(student);
+//        Quiz.questions.add(professor);
+//
+//        System.out.println(Quiz.questions.get(0));
+//        System.out.println(Quiz.questions.get(1));
 
         // Create instance of professor class and student class
         Instance.instanceCreator();

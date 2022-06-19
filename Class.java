@@ -10,9 +10,39 @@ public class Class {
 
     private ArrayList<Question> questionBank = new ArrayList<Question>();
 
+    private ArrayList<Exam> exams = new ArrayList<Exam>();
+
+    private ArrayList<HomeWork> homeWorks = new ArrayList<HomeWork>();
+
+    private ArrayList<String> announcements = new ArrayList<String>();
+
     public Class(String name, Professor professor) {
         this.name = name;
         this.professor = professor;
+    }
+
+    public ArrayList<String> getAnnouncements() {
+        return announcements;
+    }
+
+    public void setAnnouncements(ArrayList<String> announcements) {
+        this.announcements = announcements;
+    }
+
+    public ArrayList<HomeWork> getHomeWorks() {
+        return homeWorks;
+    }
+
+    public void setHomeWorks(ArrayList<HomeWork> homeWorks) {
+        this.homeWorks = homeWorks;
+    }
+
+    public ArrayList<Exam> getExams() {
+        return exams;
+    }
+
+    public void setExams(ArrayList<Exam> exams) {
+        this.exams = exams;
     }
 
     public String getName() {

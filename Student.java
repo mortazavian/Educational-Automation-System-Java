@@ -1,5 +1,6 @@
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Student {
 
@@ -164,7 +165,6 @@ public class Student {
 
         Student currentStudent = DataBase.returnStudentByStudentNumber(studentNumber);
 
-
         studentMenu(currentStudent);
 
     }
@@ -174,7 +174,8 @@ public class Student {
         int userInput;
 
         userInput = Integer.parseInt(
-                JOptionPane.showInputDialog(null, "You select student menu.\nSelect one:\n1.Join a class\n2.Go to a class\n1.View grades\n2.View profile\n3.Log out",
+                JOptionPane.showInputDialog(null,
+                        "You select student menu.\nSelect one:\n1.Join a class\n2.Go to a class",
                         "Student Menu",
                         JOptionPane.NO_OPTION));
 
@@ -186,23 +187,25 @@ public class Student {
                 goToClassStudent(currentStudent);
                 break;
 
-
         }
     }
 
-
     public static void joinClassStudent(Student currentStudent) {
 
-        String classToJoin = JOptionPane.showInputDialog(null, "Please enter the name of the class you want to join: ", "Join a class", JOptionPane.NO_OPTION);
+        String classToJoin = JOptionPane.showInputDialog(null, "Please enter the name of the class you want to join: ",
+                "Join a class", JOptionPane.NO_OPTION);
 
         while (DataBase.isFoundClassName(classToJoin) == false) {
-            JOptionPane.showMessageDialog(null, "The class name is incorrect\nclick OK and enter it again", "Join a class", JOptionPane.ERROR_MESSAGE);
-            classToJoin = JOptionPane.showInputDialog(null, "Please enter the name of the class you want to join: ", "Join a class", JOptionPane.NO_OPTION);
+            JOptionPane.showMessageDialog(null, "The class name is incorrect\nclick OK and enter it again",
+                    "Join a class", JOptionPane.ERROR_MESSAGE);
+            classToJoin = JOptionPane.showInputDialog(null, "Please enter the name of the class you want to join: ",
+                    "Join a class", JOptionPane.NO_OPTION);
         }
 
         // Check if the student is already in the class
         if (DataBase.isStudentInClass(currentStudent, classToJoin) == true) {
-            JOptionPane.showMessageDialog(null, "You are already in the class", "Join a class", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "You are already in the class", "Join a class",
+                    JOptionPane.ERROR_MESSAGE);
         } else {
             DataBase.classes.get(DataBase.returnIndexOfClass(classToJoin)).getStudents().add(currentStudent);
         }
@@ -211,16 +214,24 @@ public class Student {
 
     private static void goToClassStudent(Student currentStudent) {
 
-        String classToGoTo = JOptionPane.showInputDialog(null, "Please enter the name of the class you want to go to: ", "Go to a class", JOptionPane.NO_OPTION);
+        String classToGoTo = JOptionPane.showInputDialog(null, "Please enter the name of the class you want to go to: ",
+                "Go to a class", JOptionPane.NO_OPTION);
 
         while (DataBase.isFoundClassName(classToGoTo) == false) {
-            JOptionPane.showMessageDialog(null, "The class name is incorrect\nclick OK and enter it again", "Go to a class", JOptionPane.ERROR_MESSAGE);
-            classToGoTo = JOptionPane.showInputDialog(null, "Please enter the name of the class you want to go: ", "Go to a class", JOptionPane.NO_OPTION);
+            JOptionPane.showMessageDialog(null, "The class name is incorrect\nclick OK and enter it again",
+                    "Go to a class", JOptionPane.ERROR_MESSAGE);
+            classToGoTo = JOptionPane.showInputDialog(null, "Please enter the name of the class you want to go: ",
+                    "Go to a class", JOptionPane.NO_OPTION);
         }
 
         if (DataBase.isStudentInClass(currentStudent, classToGoTo) == true) {
 
-            int userInput = Integer.parseInt(JOptionPane.showInputDialog(null, "You select class menu.\nSelect one:\n1.View students in the class\n2.View the references\n2.View grades\n3.Log out", "Go to a class", JOptionPane.NO_OPTION));
+            int userInput = Integer.parseInt(JOptionPane.showInputDialog(null,
+                    "You select class menu.\nSelect one:\n1.View students in the class\n2.View the references\n" +
+                            "3.Go to exams \n4.Go to home works \n" +
+                            "5.See an exam grade \n6.See a home work grade \n" +
+                            "7.See announcements",
+                    "Go to a class", JOptionPane.NO_OPTION));
 
             switch (userInput) {
                 case 1:
@@ -229,25 +240,41 @@ public class Student {
                 case 2:
                     viewClassReferences(currentStudent, classToGoTo);
                     break;
+                case 3:
+                    examPage(currentStudent, classToGoTo);
+                    break;
+                case 4:
+                    homeWorkPage(currentStudent, classToGoTo);
+                    break;
+                case 5:
+                    seeExamGrade(currentStudent, classToGoTo);
+                    break;
+                case 6:
+                    seeHomeWorkGrade(currentStudent, classToGoTo);
+                    break;
+                case 7:
+                    seeAnnouncements(currentStudent, classToGoTo);
+                    break;
+
             }
 
         } else {
-            JOptionPane.showMessageDialog(null, "You are not a student in this class", "Go to a class", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "You are not a student in this class", "Go to a class",
+                    JOptionPane.ERROR_MESSAGE);
         }
 
     }
 
     private static void viewClassStudent(Student currentStudent, String classToGoTo) {
-        
+
         String studentsName = "The students in the class are: \n";
-        
+
         for (Student student : DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getStudents()) {
             studentsName += student.getName() + " " + student.getLastName() + "\n";
             // System.out.println(student.name + " " + student.lastName);
         }
 
-        
-         JOptionPane.showMessageDialog(null , studentsName , "Students in class" , JOptionPane.NO_OPTION);
+        JOptionPane.showMessageDialog(null, studentsName, "Students in class", JOptionPane.NO_OPTION);
     }
 
     private static void viewClassReferences(Student currentStudent, String classToGoTo) {
@@ -258,5 +285,125 @@ public class Student {
                 }
             }
         }
+    }
+
+    private static void examPage(Student currentStudent, String classToGoTo) {
+
+        Random random = new Random();
+
+        String allQuestions = "The questions are:\n";
+        String studentAnswer;
+        String examName = JOptionPane.showInputDialog(null, "Please enter the name of the exam: ", "Exam page", JOptionPane.NO_OPTION);
+
+        while (DataBase.returnIndexOfExam(classToGoTo, examName) == -1) {
+
+            examName = JOptionPane.showInputDialog(null, "Please enter the name of the exam: ", "Exam page", JOptionPane.NO_OPTION);
+        }
+
+        Exam exam = DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getExams().get(DataBase.returnIndexOfExam(classToGoTo, examName));
+
+        ArrayList<Integer> askedQuestions = new ArrayList<Integer>();
+
+        askedQuestions.add(0);
+
+        System.out.println(exam.getNumberOfQuestionsForEachStudent());
+
+        for (int i = 0; i < exam.getNumberOfQuestionsForEachStudent(); i++) {
+
+            int randomQuestion = random.nextInt(DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getQuestionBank().size());
+
+            while (askedQuestions.contains(randomQuestion)) {
+                randomQuestion = random.nextInt(DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getQuestionBank().size());
+            }
+
+            allQuestions += DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getQuestionBank().get(randomQuestion).getQuestionText() + "\n";
+
+            askedQuestions.add(randomQuestion);
+
+        }
+
+        studentAnswer = JOptionPane.showInputDialog(null, allQuestions + "\nEnter your answers and then click OK", "Exam page", JOptionPane.NO_OPTION);
+
+        DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getExams().get(DataBase.returnIndexOfExam(classToGoTo, examName)).getAnswers().put(currentStudent.getStudentNumber(), studentAnswer);
+
+        System.out.println(allQuestions);
+
+        System.out.println(DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getExams().get(DataBase.returnIndexOfExam(classToGoTo, examName)).getAnswers());
+
+    }
+
+    private static void homeWorkPage(Student currentStudent, String classToGoTo) {
+
+        String studentAnswer;
+        String homeWorkName = JOptionPane.showInputDialog(null, "Please enter the name of the home work: ", "Home work page", JOptionPane.NO_OPTION);
+        String allQuestions = "The questions are:\n";
+        while (DataBase.returnIndexOfHomeWork(classToGoTo, homeWorkName) == -1) {
+
+            homeWorkName = JOptionPane.showInputDialog(null, "Please enter the name of the home work: ", "Home work page", JOptionPane.NO_OPTION);
+        }
+
+        HomeWork homeWork = DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getHomeWorks().get(DataBase.returnIndexOfHomeWork(classToGoTo, homeWorkName));
+
+        for (int i = 0; i < homeWork.getQuestions().size(); i++) {
+            allQuestions += homeWork.getQuestions().get(i).getQuestionText() + "\n";
+        }
+
+        studentAnswer = JOptionPane.showInputDialog(null, allQuestions + "\nEnter your answers and then click OK", "Home work page", JOptionPane.NO_OPTION);
+
+        System.out.println(studentAnswer);
+
+        DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getHomeWorks().get(DataBase.returnIndexOfHomeWork(classToGoTo, homeWorkName)).getAnswers().put(currentStudent.getStudentNumber(), studentAnswer);
+
+        System.out.println(DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getHomeWorks().get(DataBase.returnIndexOfHomeWork(classToGoTo, homeWorkName)).getAnswers());
+    }
+
+    public static void seeExamGrade(Student currentStudent, String classToGoTo) {
+
+        String examName = JOptionPane.showInputDialog(null, "Please enter the name of the exam: ", "Exam page", JOptionPane.NO_OPTION);
+        double studentGrade;
+
+        while (DataBase.returnIndexOfExam(classToGoTo, examName) == -1) {
+
+            examName = JOptionPane.showInputDialog(null, "Please enter the name of the exam: ", "Exam page", JOptionPane.NO_OPTION);
+        }
+
+        Exam exam = DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getExams().get(DataBase.returnIndexOfExam(classToGoTo, examName));
+
+        if (exam.getScores().get(currentStudent.getStudentNumber()) == null) {
+            JOptionPane.showMessageDialog(null, "You have not taken this exam yet", "Exam page", JOptionPane.ERROR_MESSAGE);
+        }
+        if (exam.getScores().get(currentStudent.getStudentNumber()) != null) {
+            studentGrade = exam.getScores().get(currentStudent.getStudentNumber());
+            JOptionPane.showMessageDialog(null, "Your grade is: " + studentGrade, "Exam page", JOptionPane.NO_OPTION);
+        }
+    }
+
+    public static void seeHomeWorkGrade(Student currentStudent, String classToGoTo) {
+
+        String homeWorkName = JOptionPane.showInputDialog(null, "Please enter the name of the home work: ", "Home work page", JOptionPane.NO_OPTION);
+        double studentGrade;
+
+        while (DataBase.returnIndexOfHomeWork(classToGoTo, homeWorkName) == -1) {
+
+            homeWorkName = JOptionPane.showInputDialog(null, "Please enter the name of the home work: ", "Home work page", JOptionPane.NO_OPTION);
+        }
+
+        HomeWork homeWork = DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getHomeWorks().get(DataBase.returnIndexOfHomeWork(classToGoTo, homeWorkName));
+
+        if (homeWork.getScores().get(currentStudent.getStudentNumber()) == null) {
+            JOptionPane.showMessageDialog(null, "You have not taken this home work yet", "Home work page", JOptionPane.ERROR_MESSAGE);
+        }
+        if (homeWork.getScores().get(currentStudent.getStudentNumber()) != null) {
+            studentGrade = homeWork.getScores().get(currentStudent.getStudentNumber());
+            JOptionPane.showMessageDialog(null, "Your grade is: " + studentGrade, "Home work page", JOptionPane.NO_OPTION);
+        }
+    }
+
+    public static void seeAnnouncements(Student currentStudent, String classToGoTo) {
+        String announcements = "The announcements are: \n";
+        for (int i = 0; i < DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getAnnouncements().size(); i++) {
+            announcements += DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getAnnouncements().get(i) + "\n";
+        }
+        JOptionPane.showMessageDialog(null, announcements, "Announcements", JOptionPane.NO_OPTION);
     }
 }

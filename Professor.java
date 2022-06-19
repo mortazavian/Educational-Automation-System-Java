@@ -157,7 +157,8 @@ public class Professor {
         int userInput;
 
         userInput = Integer.parseInt(
-                JOptionPane.showInputDialog(null, "You select student menu.\nSelect one:\n1.Create new class\n2.Go to a class",
+                JOptionPane.showInputDialog(null,
+                        "You select student menu.\nSelect one:\n1.Create new class\n2.Go to a class",
                         "Professor Menu",
                         JOptionPane.NO_OPTION));
 
@@ -212,7 +213,9 @@ public class Professor {
 
         int userInput = Integer.parseInt(JOptionPane.showInputDialog(null, "Choose one: \n1.Add student to class \n" +
                 "2.Remove student from class \n3.Add Home work \n4.Add question to question bank " +
-                "\n5.Remove question from question bank "));
+                "\n5.Remove question from question bank \n6.Add new exam \n7.Add new home work \n8.Add reference \n" +
+                "9.Add grade to a student homeworks \n10.Add grade to a student exam \n" +
+                "11.Send announcement"));
 
         switch (userInput) {
 
@@ -227,8 +230,28 @@ public class Professor {
                 break;
             case 4:
                 addQuestionToQuestionBank(currentProfessor, className);
+                break;
             case 5:
                 removeQuestionFromQuestionBank(currentProfessor, className);
+                break;
+            case 6:
+                addNewExam(currentProfessor, className);
+                break;
+            case 7:
+                addNewHomeWork(currentProfessor, className);
+                break;
+            case 8:
+                addReference(currentProfessor, className);
+                break;
+            case 9:
+                addGradeToStudentHomeworks(currentProfessor, className);
+                break;
+            case 10:
+                addGradeToStudentExam(currentProfessor, className);
+                break;
+            case 11:
+                sendAnnouncement(currentProfessor, className);
+                break;
         }
     }
 
@@ -247,7 +270,8 @@ public class Professor {
 
         System.out.println(DataBase.classes.get(DataBase.returnIndexOfClass(className)).getStudents());
 
-        DataBase.classes.get(DataBase.returnIndexOfClass(className)).getStudents().add(DataBase.returnStudentByStudentNumber(studentNumber));
+        DataBase.classes.get(DataBase.returnIndexOfClass(className)).getStudents()
+                .add(DataBase.returnStudentByStudentNumber(studentNumber));
 
         System.out.println(DataBase.classes.get(DataBase.returnIndexOfClass(className)).getStudents());
     }
@@ -267,7 +291,8 @@ public class Professor {
 
         System.out.println(DataBase.classes.get(DataBase.returnIndexOfClass(className)).getStudents());
 
-        DataBase.classes.get(DataBase.returnIndexOfClass(className)).getStudents().remove(DataBase.returnStudentByStudentNumber(studentNumber));
+        DataBase.classes.get(DataBase.returnIndexOfClass(className)).getStudents()
+                .remove(DataBase.returnStudentByStudentNumber(studentNumber));
 
         System.out.println(DataBase.classes.get(DataBase.returnIndexOfClass(className)).getStudents());
     }
@@ -310,7 +335,8 @@ public class Professor {
         while (DataBase.isfoundQuestion(className, questionName, questionText) == false) {
 
             JOptionPane.showMessageDialog(null, "This question does not exist in the system \n" +
-                    "Please enter the question name and click OK", "Remove Question from Question Bank", JOptionPane.ERROR_MESSAGE);
+                            "Please enter the question name and click OK", "Remove Question from Question Bank",
+                    JOptionPane.ERROR_MESSAGE);
 
             questionName = JOptionPane.showInputDialog(null, "This question does not exist in the system \n" +
                             "Please enter the question name again and click OK",
@@ -320,8 +346,152 @@ public class Professor {
                     "Remove Question from Question Bank", JOptionPane.ERROR_MESSAGE);
         }
 
-        DataBase.classes.get(DataBase.returnIndexOfClass(className)).getQuestionBank().remove(DataBase.returnIndexOfQuestion(questionName, questionText, className));
+        DataBase.classes.get(DataBase.returnIndexOfClass(className)).getQuestionBank()
+                .remove(DataBase.returnIndexOfQuestion(questionName, questionText, className));
 
         System.out.println(DataBase.classes.get(DataBase.returnIndexOfClass(className)).getQuestionBank());
     }
+
+    public static void addNewExam(Professor currentProfessor, String className) {
+
+        String examName;
+        int numberOfQuestionsForEachStudent;
+
+        examName = JOptionPane.showInputDialog(null, "Please enter the exam name and click OK",
+                "Add New Exam", JOptionPane.NO_OPTION);
+
+        numberOfQuestionsForEachStudent = Integer.parseInt(JOptionPane.showInputDialog(null,
+                "Please enter the number of questions for each student and click OK",
+                "Add New Exam", JOptionPane.NO_OPTION));
+
+        Exam exam = new Exam(examName, numberOfQuestionsForEachStudent);
+
+        DataBase.classes.get(DataBase.returnIndexOfClass(className)).getExams().add(exam);
+
+        System.out.println(DataBase.classes.get(DataBase.returnIndexOfClass(className)).getExams());
+    }
+
+    public static void addNewHomeWork(Professor currentProfessor, String className) {
+
+        String homeWorkName = JOptionPane.showInputDialog(null, "Please enter the home work name and click OK",
+                "Add New Home Work", JOptionPane.NO_OPTION);
+
+        HomeWork homeWork = new HomeWork(homeWorkName);
+
+        int numberOfQuestions = Integer.parseInt(JOptionPane.showInputDialog(null,
+                "Please enter the number of questions and click OK",
+                "Add New Home Work", JOptionPane.NO_OPTION));
+
+        for (int i = 0; i < numberOfQuestions; i++) {
+            String questionName = JOptionPane.showInputDialog(null, "Please enter the question name and click OK",
+                    "Add New Home Work", JOptionPane.NO_OPTION);
+            String questionText = JOptionPane.showInputDialog(null, "Please enter the question text and click OK",
+                    "Add New Home Work", JOptionPane.NO_OPTION);
+            String answer = JOptionPane.showInputDialog(null, "Please enter the answer and click OK",
+                    "Add New Home Work", JOptionPane.NO_OPTION);
+            Question question = new Question(questionName, questionText, answer);
+
+            homeWork.getQuestions().add(question);
+        }
+
+        // TESTING
+        System.out.println(homeWork.getQuestions());
+
+        DataBase.classes.get(DataBase.returnIndexOfClass(className)).getHomeWorks().add(homeWork);
+
+        System.out.println(DataBase.classes.get(0).getHomeWorks().get(0).getQuestions().get(0).getQuestionText());
+    }
+
+    public static void addReference(Professor currentProfessor, String className) {
+
+        String referenceName = JOptionPane.showInputDialog(null, "Please enter the reference name and click OK",
+                "Add Reference", JOptionPane.NO_OPTION);
+
+        DataBase.classes.get(DataBase.returnIndexOfClass(className)).getReferences().add(referenceName);
+
+        // TESTING
+        System.out.println(DataBase.classes.get(DataBase.returnIndexOfClass(className)).getReferences());
+    }
+
+    public static void addGradeToStudentHomeworks(Professor currentProfessor, String className) {
+
+        String studentNumber = JOptionPane.showInputDialog(null, "Please enter the student number and click OK",
+                "Add Grade to Student Homeworks", JOptionPane.NO_OPTION);
+
+        while (DataBase.isFoundStudentNumber(studentNumber) == false) {
+
+            studentNumber = JOptionPane.showInputDialog(null, "This student number does not exist in the system \n" +
+                            "Please enter the student number again and click OK",
+                    "Add Grade to Student Homeworks", JOptionPane.ERROR_MESSAGE);
+        }
+
+        String homeWorkName = JOptionPane.showInputDialog(null, "Please enter the home work name and click OK",
+                "Add Grade to Student Homeworks", JOptionPane.NO_OPTION);
+
+        while (DataBase.returnIndexOfHomeWork(className, homeWorkName) == -1) {
+
+            homeWorkName = JOptionPane.showInputDialog(null, "This home work does not exist in the system \n" +
+                            "Please enter the home work name again and click OK",
+                    "Add Grade to Student Homeworks", JOptionPane.ERROR_MESSAGE);
+        }
+
+        double gradeOfStudent = Double.parseDouble(JOptionPane.showInputDialog(null, "Please enter the grade of student and click OK",
+                "Add Grade to Student Homeworks", JOptionPane.NO_OPTION));
+
+        // Test
+        System.out.println("The student number is: " + studentNumber);
+        System.out.println("The home work name is: " + homeWorkName);
+        System.out.println("The grade is: " + gradeOfStudent);
+
+        DataBase.classes.get(DataBase.returnIndexOfClass(className)).getHomeWorks().get(DataBase.returnIndexOfHomeWork(className, homeWorkName)).getScores().put(studentNumber, gradeOfStudent);
+
+
+        // TESTING
+        System.out.println(DataBase.classes.get(DataBase.returnIndexOfClass(className)).getHomeWorks().get(DataBase.returnIndexOfHomeWork(className, homeWorkName)).getScores());
+    }
+
+    public static void addGradeToStudentExam(Professor currentProfessor, String className) {
+
+        String studentNumber = JOptionPane.showInputDialog(null, "Please enter the student number and click OK",
+                "Add Grade to Student Exam", JOptionPane.NO_OPTION);
+
+        while (DataBase.isFoundStudentNumber(studentNumber) == false) {
+
+            studentNumber = JOptionPane.showInputDialog(null, "This student number does not exist in the system \n" +
+                            "Please enter the student number again and click OK",
+                    "Add Grade to Student Exam", JOptionPane.ERROR_MESSAGE);
+        }
+
+        String examName = JOptionPane.showInputDialog(null, "Please enter the exam name and click OK",
+                "Add Grade to Student Exam", JOptionPane.NO_OPTION);
+
+        while (DataBase.returnIndexOfExam(className, examName) == -1) {
+
+            examName = JOptionPane.showInputDialog(null, "This exam does not exist in the system \n" +
+                            "Please enter the exam name again and click OK",
+                    "Add Grade to Student Exam", JOptionPane.ERROR_MESSAGE);
+        }
+
+
+        double gradeOfStudent = Double.parseDouble(JOptionPane.showInputDialog(null, "Please enter the grade of student and click OK",
+                "Add Grade to Student Exam", JOptionPane.NO_OPTION));
+
+        // Test
+        System.out.println("The student number is: " + studentNumber);
+        System.out.println("The home work name is: " + examName);
+        System.out.println("The grade is: " + gradeOfStudent);
+
+        DataBase.classes.get(DataBase.returnIndexOfClass(className)).getHomeWorks().get(DataBase.returnIndexOfExam(className, examName)).getScores().put(studentNumber, gradeOfStudent);
+        System.out.println("Just For Test");
+        System.out.println(DataBase.classes.get(DataBase.returnIndexOfClass(className)).getHomeWorks().get(DataBase.returnIndexOfExam(className, examName)).getScores());
+    }
+
+    public static void sendAnnouncement(Professor currentProfessor, String className) {
+        String announcement = JOptionPane.showInputDialog(null, "Please enter the announcement and click OK",
+                "Send Announcement", JOptionPane.NO_OPTION);
+        DataBase.classes.get(DataBase.returnIndexOfClass(className)).getAnnouncements().add(announcement);
+        JOptionPane.showMessageDialog(null, "Announcement sent successfully", "Send Announcement", JOptionPane.INFORMATION_MESSAGE);
+        System.out.println("All the announcements are: " + DataBase.classes.get(DataBase.returnIndexOfClass(className)).getAnnouncements());
+    }
+
 }
