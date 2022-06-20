@@ -5,7 +5,7 @@ public class Instance {
         //----------------------------------------------------------------------------------------------------------------------
         HomeWork homeWork1 = new HomeWork("homeWork1");
         //----------------------------------------------------------------------------------------------------------------------
-        Exam exam1 = new Exam("exam1", 2);
+        Exam exam1 = new Exam("exam1", 2 ,true);
         //----------------------------------------------------------------------------------------------------------------------
         Question question1 = new Question("question1", "question1", "answer1");
         Question question2 = new Question("question2", "question2", "answer2");

@@ -207,8 +207,18 @@ public class Student {
             JOptionPane.showMessageDialog(null, "You are already in the class", "Join a class",
                     JOptionPane.ERROR_MESSAGE);
         } else {
+            Class tempClass = DataBase.classes.get(DataBase.returnIndexOfClass(classToJoin));
+
+//            for (int i=0;i)
+
+
+
+
             DataBase.classes.get(DataBase.returnIndexOfClass(classToJoin)).getStudents().add(currentStudent);
         }
+
+
+
 
     }
 
@@ -302,33 +312,41 @@ public class Student {
 
         Exam exam = DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getExams().get(DataBase.returnIndexOfExam(classToGoTo, examName));
 
-        ArrayList<Integer> askedQuestions = new ArrayList<Integer>();
+        if (exam.isActive() == true) {
 
-        askedQuestions.add(0);
+            ArrayList<Integer> askedQuestions = new ArrayList<Integer>();
 
-        System.out.println(exam.getNumberOfQuestionsForEachStudent());
+            askedQuestions.add(0);
 
-        for (int i = 0; i < exam.getNumberOfQuestionsForEachStudent(); i++) {
+            System.out.println(exam.getNumberOfQuestionsForEachStudent());
 
-            int randomQuestion = random.nextInt(DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getQuestionBank().size());
+            for (int i = 0; i < exam.getNumberOfQuestionsForEachStudent(); i++) {
 
-            while (askedQuestions.contains(randomQuestion)) {
-                randomQuestion = random.nextInt(DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getQuestionBank().size());
+                int randomQuestion = random.nextInt(DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getQuestionBank().size());
+
+                while (askedQuestions.contains(randomQuestion)) {
+                    randomQuestion = random.nextInt(DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getQuestionBank().size());
+                }
+
+                allQuestions += DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getQuestionBank().get(randomQuestion).getQuestionText() + "\n";
+
+                askedQuestions.add(randomQuestion);
+
             }
 
-            allQuestions += DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getQuestionBank().get(randomQuestion).getQuestionText() + "\n";
+            studentAnswer = JOptionPane.showInputDialog(null, allQuestions + "\nEnter your answers and then click OK", "Exam page", JOptionPane.NO_OPTION);
 
-            askedQuestions.add(randomQuestion);
+            DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getExams().get(DataBase.returnIndexOfExam(classToGoTo, examName)).getAnswers().put(currentStudent.getStudentNumber(), studentAnswer);
+
+            System.out.println(allQuestions);
+
+            System.out.println(DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getExams().get(DataBase.returnIndexOfExam(classToGoTo, examName)).getAnswers());
 
         }
+        else if (exam.isActive() == false) {
+            JOptionPane.showMessageDialog(null, "The exam is not active", "Exam page", JOptionPane.ERROR_MESSAGE);
+        }
 
-        studentAnswer = JOptionPane.showInputDialog(null, allQuestions + "\nEnter your answers and then click OK", "Exam page", JOptionPane.NO_OPTION);
-
-        DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getExams().get(DataBase.returnIndexOfExam(classToGoTo, examName)).getAnswers().put(currentStudent.getStudentNumber(), studentAnswer);
-
-        System.out.println(allQuestions);
-
-        System.out.println(DataBase.classes.get(DataBase.returnIndexOfClass(classToGoTo)).getExams().get(DataBase.returnIndexOfExam(classToGoTo, examName)).getAnswers());
 
     }
 

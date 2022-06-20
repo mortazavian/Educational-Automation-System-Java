@@ -215,6 +215,7 @@ public class Professor {
                 "2.Remove student from class \n3.Add Home work \n4.Add question to question bank " +
                 "\n5.Remove question from question bank \n6.Add new exam \n7.Add new home work \n8.Add reference \n" +
                 "9.Add grade to a student homeworks \n10.Add grade to a student exam \n" +
+                "12.Active an exam" +
                 "11.Send announcement"));
 
         switch (userInput) {
@@ -252,6 +253,8 @@ public class Professor {
             case 11:
                 sendAnnouncement(currentProfessor, className);
                 break;
+            case 12:
+                activeExam(currentProfessor, className);
         }
     }
 
@@ -364,7 +367,7 @@ public class Professor {
                 "Please enter the number of questions for each student and click OK",
                 "Add New Exam", JOptionPane.NO_OPTION));
 
-        Exam exam = new Exam(examName, numberOfQuestionsForEachStudent);
+        Exam exam = new Exam(examName, numberOfQuestionsForEachStudent , false);
 
         DataBase.classes.get(DataBase.returnIndexOfClass(className)).getExams().add(exam);
 
@@ -492,6 +495,20 @@ public class Professor {
         DataBase.classes.get(DataBase.returnIndexOfClass(className)).getAnnouncements().add(announcement);
         JOptionPane.showMessageDialog(null, "Announcement sent successfully", "Send Announcement", JOptionPane.INFORMATION_MESSAGE);
         System.out.println("All the announcements are: " + DataBase.classes.get(DataBase.returnIndexOfClass(className)).getAnnouncements());
+    }
+
+    public static void activeExam(Professor currentProfessor, String className) {
+        String examName = JOptionPane.showInputDialog(null, "Please enter the exam name and click OK",
+                "Active Exam", JOptionPane.NO_OPTION);
+        while (DataBase.returnIndexOfExam(className, examName) == -1) {
+
+            examName = JOptionPane.showInputDialog(null, "This exam does not exist in the system \n" +
+                            "Please enter the exam name again and click OK",
+                    "Active Exam", JOptionPane.ERROR_MESSAGE);
+        }
+
+        DataBase.classes.get(DataBase.returnIndexOfClass(className)).getExams().get(DataBase.returnIndexOfExam(className, examName)).setActive(true);
+        System.out.println(DataBase.classes.get(DataBase.returnIndexOfClass(className)).getExams().get(DataBase.returnIndexOfExam(className, examName)).isActive());
     }
 
 }

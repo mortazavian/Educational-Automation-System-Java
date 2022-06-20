@@ -16,6 +16,11 @@ public class Class {
 
     private ArrayList<String> announcements = new ArrayList<String>();
 
+    private ArrayList<String> Days = new ArrayList<String>();
+
+    private ArrayList<String> time = new ArrayList<String>();
+
+
     public Class(String name, Professor professor) {
         this.name = name;
         this.professor = professor;

@@ -13,9 +13,20 @@ public class Exam {
 
     private HashMap<String , String> answers = new HashMap<String , String>();
 
-    public Exam(String examName, int numberOfQuestionsForEachStudent) {
+    private boolean isActive;
+
+    public Exam(String examName, int numberOfQuestionsForEachStudent , boolean isActive) {
         this.examName = examName;
         this.numberOfQuestionsForEachStudent = numberOfQuestionsForEachStudent;
+        this.isActive = isActive;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public HashMap<String, String> getAnswers() {
