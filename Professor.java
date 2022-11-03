@@ -215,8 +215,9 @@ public class Professor {
                 "2.Remove student from class \n3.Add Home work \n4.Add question to question bank " +
                 "\n5.Remove question from question bank \n6.Add new exam \n7.Add new home work \n8.Add reference \n" +
                 "9.Add grade to a student homeworks \n10.Add grade to a student exam \n" +
-                "12.Active an exam" +
-                "11.Send announcement"));
+                "11.Send announcement \n" +
+                "12.Active an exam"
+        ));
 
         switch (userInput) {
 
@@ -367,7 +368,7 @@ public class Professor {
                 "Please enter the number of questions for each student and click OK",
                 "Add New Exam", JOptionPane.NO_OPTION));
 
-        Exam exam = new Exam(examName, numberOfQuestionsForEachStudent , false);
+        Exam exam = new Exam(examName, numberOfQuestionsForEachStudent, false);
 
         DataBase.classes.get(DataBase.returnIndexOfClass(className)).getExams().add(exam);
 
